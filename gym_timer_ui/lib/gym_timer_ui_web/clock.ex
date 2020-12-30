@@ -19,6 +19,14 @@ defmodule GymTimerUiWeb.Clock do
     GenServer.call(__MODULE__, {:count_up_mode, 10})
   end
 
+  def pause() do
+    GenServer.call(__MODULE__, :pause)
+  end
+
+  def unpause() do
+    GenServer.call(__MODULE__, :unpause)
+  end
+
   @impl true
   def init(state) do
     new_state = Map.merge(%{mode: :clock}, state)
@@ -54,32 +62,30 @@ defmodule GymTimerUiWeb.Clock do
     current_time = Timex.now()
     start_time = Map.get(state, :start_time, current_time)
 
-    time_diff = Time.diff(current_time, start_time)
+    paused_time =
+      Map.get(state, :pause_start, current_time)
+      |> Time.diff(current_time)
+      |> Kernel.+(Map.get(state, :paused_time, 0))
+
+    time_diff =
+      Time.diff(current_time, start_time)
+      |> Kernel.+(paused_time)
+
     counting_in = time_diff < 0
 
-    color =
-      if counting_in do
-        <<0, 255, 0>>
-      else
-        <<255, 0, 0>>
-      end
-
-    time_diff2 =
-      if counting_in do
-        time_diff * -1
-      else
-        time_diff
-      end
+    color = if counting_in, do: <<0, 255, 0>>, else: <<255, 0, 0>>
+    time_diff_abs = if counting_in, do: time_diff * -1, else: time_diff
 
     <<s1::binary-size(1)>> <> s2 =
-      time_diff2
+      time_diff_abs
       |> Integer.mod(60)
       |> Integer.to_string()
       |> String.pad_leading(2, "0")
 
     <<m1::binary-size(1)>> <> m2 =
-      time_diff2
+      time_diff_abs
       |> Integer.floor_div(60)
+      |> Integer.mod(99)
       |> Integer.to_string()
       |> String.pad_leading(2, "0")
 
@@ -118,7 +124,27 @@ defmodule GymTimerUiWeb.Clock do
   @impl true
   def handle_call({:count_up_mode, count_in}, _from, state) do
     start_time = Time.add(Timex.now(), count_in)
-    new_state = Map.merge(state, %{mode: :count_up, start_time: start_time})
+    new_state = Map.merge(state, %{mode: :count_up, start_time: start_time, paused_time: 0})
+    {:reply, new_state, new_state}
+  end
+
+  @impl true
+  def handle_call(:pause, _from, state) do
+    new_state = Map.merge(state, %{pause_start: Timex.now()})
+
+    {:reply, :paused, new_state}
+  end
+
+  @impl true
+  def handle_call(:unpause, _from, state) do
+    current_time = Timex.now()
+    additional_paused_time = Time.diff(current_time, Map.get(state, :pause_start, current_time))
+
+    new_state =
+      state
+      |> Map.delete(:pause_start)
+      |> Map.update(:paused_time, 0, fn current -> current + additional_paused_time end)
+
     {:reply, new_state, new_state}
   end
 
