@@ -1,12 +1,8 @@
 <div class="clock">
-<%= for digit <- @clock do %>
-  <div class="digit">
-    <%= for <<r::8, g::8 , b::8 <- digit>> do %>
-      <% rgb_string = String.pad_leading(Integer.to_string(r, 16),2,"0") <> String.pad_leading(Integer.to_string(g, 16), 2, "0") <> String.pad_leading(Integer.to_string(b, 16),2, "0") %>
-      <div class="segment" style="background-color: #<%= rgb_string  %> ">&nbsp;</div>
-    <% end %>
-  </div>
-<% end %>
+  <%= for <<r::8, g::8 , b::8 <- @clock>> do %>
+    <% rgb_string = String.pad_leading(Integer.to_string(r, 16),2,"0") <> String.pad_leading(Integer.to_string(g, 16), 2, "0") <> String.pad_leading(Integer.to_string(b, 16),2, "0") %>
+    <div class="segment" style="background-color: #<%= rgb_string  %> ">&nbsp;</div>
+  <% end %>
 </div>
 
 <div class="clearfix"></div>

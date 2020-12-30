@@ -15,8 +15,12 @@ defmodule GymTimerUiWeb.Clock do
     GenServer.call(__MODULE__, :clock_mode)
   end
 
-  def count_up_mode() do
-    GenServer.call(__MODULE__, {:count_up_mode, 10})
+  def count_up_mode(count_in \\ 10) do
+    GenServer.call(__MODULE__, {:count_up_mode, count_in})
+  end
+
+  def test_mode(digits) do
+    GenServer.call(__MODULE__, {:test_mode, digits})
   end
 
   def pause() do
@@ -46,13 +50,9 @@ defmodule GymTimerUiWeb.Clock do
 
     color = <<255, 0, 0>>
 
-    clock = [
-      digit(h1, color),
-      digit(h2, color),
-      digit(":", color),
-      digit(m1, color),
-      digit(m2, color)
-    ]
+    clock =
+      digit(h1, color) <>
+        digit(h2, color) <> digit(":", color) <> digit(m1, color) <> digit(m2, color)
 
     {:reply, clock, state}
   end
@@ -89,13 +89,23 @@ defmodule GymTimerUiWeb.Clock do
       |> Integer.to_string()
       |> String.pad_leading(2, "0")
 
-    clock = [
-      digit(m1, color),
-      digit(m2, color),
-      digit(":", color),
-      digit(s1, color),
-      digit(s2, color)
-    ]
+    clock =
+      digit(m1, color) <>
+        digit(m2, color) <> digit(":", color) <> digit(s1, color) <> digit(s2, color)
+
+    {:reply, clock, state}
+  end
+
+  @impl true
+  def handle_call(:val, _from, state = %{mode: :test, digits: [d1, d2, d3, d4, d5]}) do
+    color = <<0, 255, 255>>
+
+    clock =
+      digit(d1, color) <>
+        digit(d2, color) <>
+        digit(d3, color) <>
+        digit(d4, color) <>
+        digit(d5, color)
 
     {:reply, clock, state}
   end
@@ -104,13 +114,9 @@ defmodule GymTimerUiWeb.Clock do
   def handle_call(:val, _from, state) do
     color = <<0, 0, 0>>
 
-    clock = [
-      digit(:off, color),
-      digit(:off, color),
-      digit(:off, color),
-      digit(:off, color),
-      digit(:off, color)
-    ]
+    clock =
+      digit(:off, color) <>
+        digit(:off, color) <> digit(:off, color) <> digit(:off, color) <> digit(:off, color)
 
     {:reply, clock, state}
   end
@@ -126,6 +132,12 @@ defmodule GymTimerUiWeb.Clock do
     start_time = Time.add(Timex.now(), count_in)
     new_state = Map.merge(state, %{mode: :count_up, start_time: start_time, paused_time: 0})
     {:reply, new_state, new_state}
+  end
+
+  @impl true
+  def handle_call({:test_mode, digits}, _from, state) do
+    new_state = Map.merge(state, %{mode: :test, digits: digits})
+    {:reply, digits, new_state}
   end
 
   @impl true
@@ -149,50 +161,108 @@ defmodule GymTimerUiWeb.Clock do
   end
 
   def digit("1", color) do
-    @blank <> @blank <> color <> @blank <> @blank <> @blank <> color <> @blank <> @blank
+    @blank <>
+      @blank <>
+      @blank <>
+      @blank <>
+      color <>
+      color <>
+      @blank <>
+      @blank <>
+      @blank <>
+      @blank <> @blank <> @blank <> color <> color
   end
 
   def digit("2", color) do
-    @blank <> color <> color <> color <> color <> color <> @blank <> @blank <> @blank
+    @blank <>
+      @blank <>
+      color <>
+      color <>
+      color <>
+      color <>
+      color <>
+      color <>
+      color <> color <> color <> color <> @blank <> @blank
   end
 
   def digit("3", color) do
-    @blank <> color <> color <> color <> @blank <> color <> color <> @blank <> @blank
+    @blank <>
+      @blank <>
+      color <>
+      color <>
+      color <> color <> color <> color <> @blank <> @blank <> color <> color <> color <> color
   end
 
   def digit("4", color) do
-    color <> @blank <> color <> color <> @blank <> @blank <> color <> @blank <> @blank
+    color <>
+      color <>
+      @blank <>
+      @blank <>
+      color <> color <> color <> color <> @blank <> @blank <> @blank <> @blank <> color <> color
   end
 
   def digit("5", color) do
-    color <> color <> @blank <> color <> @blank <> color <> color <> @blank <> @blank
+    color <>
+      color <>
+      color <>
+      color <>
+      @blank <> @blank <> color <> color <> @blank <> @blank <> color <> color <> color <> color
   end
 
   def digit("6", color) do
-    color <> @blank <> @blank <> color <> color <> color <> color <> @blank <> @blank
+    color <>
+      color <>
+      @blank <>
+      @blank <>
+      @blank <> @blank <> color <> color <> color <> color <> color <> color <> color <> color
   end
 
   def digit("7", color) do
-    @blank <> color <> color <> @blank <> @blank <> @blank <> color <> @blank <> @blank
+    @blank <>
+      @blank <>
+      color <>
+      color <>
+      color <> color <> @blank <> @blank <> @blank <> @blank <> @blank <> @blank <> color <> color
   end
 
   def digit("8", color) do
-    color <> color <> color <> color <> color <> color <> color <> @blank <> @blank
+    color <>
+      color <>
+      color <>
+      color <>
+      color <> color <> color <> color <> color <> color <> color <> color <> color <> color
   end
 
   def digit("9", color) do
-    color <> color <> color <> color <> @blank <> @blank <> color <> @blank <> @blank
+    color <>
+      color <>
+      color <>
+      color <>
+      color <> color <> color <> color <> @blank <> @blank <> @blank <> @blank <> color <> color
   end
 
   def digit("0", color) do
-    color <> color <> color <> @blank <> color <> color <> color <> @blank <> @blank
+    color <>
+      color <>
+      color <>
+      color <>
+      color <> color <> @blank <> @blank <> color <> color <> color <> color <> color <> color
   end
 
   def digit(":", color) do
-    @blank <> @blank <> @blank <> @blank <> @blank <> @blank <> @blank <> color <> color
+    color <> color
+  end
+
+  def digit(":off", _color) do
+    @blank <> @blank
   end
 
   def digit(_number, _color) do
-    @blank <> @blank <> @blank <> @blank <> @blank <> @blank <> @blank <> @blank <> @blank
+    @blank <>
+      @blank <>
+      @blank <>
+      @blank <>
+      @blank <>
+      @blank <> @blank <> @blank <> @blank <> @blank <> @blank <> @blank <> @blank <> @blank
   end
 end
