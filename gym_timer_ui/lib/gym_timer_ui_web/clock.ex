@@ -23,6 +23,10 @@ defmodule GymTimerUiWeb.Clock do
     GenServer.call(__MODULE__, {:test_mode, digits})
   end
 
+  def interval_mode(work_period, rest_period \\ 0, count_in \\ 10) do
+    GenServer.call(__MODULE__, {:interval_mode, work_period, rest_period, count_in})
+  end
+
   def pause() do
     GenServer.call(__MODULE__, :pause)
   end
@@ -97,6 +101,80 @@ defmodule GymTimerUiWeb.Clock do
   end
 
   @impl true
+  def handle_call(
+        :val,
+        _from,
+        state = %{
+          mode: :interval,
+          work_period: work_period,
+          rest_period: rest_period,
+          start_time: start_time
+        }
+      ) do
+    current_time = Timex.now()
+
+    paused_time =
+      Map.get(state, :pause_start, current_time)
+      |> Time.diff(current_time)
+      |> Kernel.+(Map.get(state, :paused_time, 0))
+
+    time_diff =
+      Time.diff(current_time, start_time)
+      |> Kernel.+(paused_time)
+
+    counting_in = time_diff < 0
+
+    time_diff_abs = if counting_in, do: time_diff * -1, else: time_diff
+
+    total_period = work_period + rest_period
+    resting = !counting_in && Integer.mod(time_diff, total_period) >= work_period
+
+    color =
+      cond do
+        resting ->
+          <<0, 0, 255>>
+
+        counting_in ->
+          <<0, 255, 0>>
+
+        true ->
+          <<255, 0, 0>>
+      end
+
+    total_intervals =
+      if counting_in, do: 0, else: time_diff_abs |> Integer.floor_div(total_period)
+
+    interval_value =
+      if resting do
+        rest_period -
+          (time_diff_abs
+           |> Integer.mod(total_period)
+           |> Kernel.-(work_period)
+           |> Integer.mod(rest_period))
+      else
+        time_diff_abs |> Integer.mod(total_period) |> Integer.mod(work_period)
+      end
+
+    <<s1::binary-size(1)>> <> s2 =
+      interval_value
+      |> Integer.mod(99)
+      |> Integer.to_string()
+      |> String.pad_leading(2, "0")
+
+    <<m1::binary-size(1)>> <> m2 =
+      total_intervals
+      |> Integer.mod(99)
+      |> Integer.to_string()
+      |> String.pad_leading(2, "0")
+
+    clock =
+      digit(m1, <<0, 255, 0>>) <>
+        digit(m2, <<0, 255, 0>>) <> digit(":", color) <> digit(s1, color) <> digit(s2, color)
+
+    {:reply, clock, state}
+  end
+
+  @impl true
   def handle_call(:val, _from, state = %{mode: :test, digits: [d1, d2, d3, d4, d5]}) do
     color = <<0, 255, 255>>
 
@@ -138,6 +216,22 @@ defmodule GymTimerUiWeb.Clock do
   def handle_call({:test_mode, digits}, _from, state) do
     new_state = Map.merge(state, %{mode: :test, digits: digits})
     {:reply, digits, new_state}
+  end
+
+  @impl true
+  def handle_call({:interval_mode, work_period, rest_period, count_in}, _from, state) do
+    start_time = Time.add(Timex.now(), count_in)
+
+    new_state =
+      Map.merge(state, %{
+        mode: :interval,
+        start_time: start_time,
+        paused_time: 0,
+        work_period: work_period,
+        rest_period: rest_period
+      })
+
+    {:reply, new_state, new_state}
   end
 
   @impl true
