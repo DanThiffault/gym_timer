@@ -1,7 +1,7 @@
 defmodule GymTimerUiWeb.Clock do
   use GenServer
 
-  @blank <<0, 0, 0>>
+  @blank <<222, 222, 222>>
 
   def start_link(state) do
     GenServer.start_link(__MODULE__, state, name: __MODULE__)
@@ -58,7 +58,8 @@ defmodule GymTimerUiWeb.Clock do
       digit(h1, color) <>
         digit(h2, color) <> digit(":", color) <> digit(m1, color) <> digit(m2, color)
 
-    {:reply, clock, state}
+    new_state = Map.put(state, :clock, clock)
+    {:reply, new_state, new_state}
   end
 
   @impl true
@@ -67,13 +68,12 @@ defmodule GymTimerUiWeb.Clock do
     start_time = Map.get(state, :start_time, current_time)
 
     paused_time =
-      Map.get(state, :pause_start, current_time)
-      |> Time.diff(current_time)
+      Time.diff(current_time, Map.get(state, :pause_start, current_time))
       |> Kernel.+(Map.get(state, :paused_time, 0))
 
     time_diff =
       Time.diff(current_time, start_time)
-      |> Kernel.+(paused_time)
+      |> Kernel.-(paused_time)
 
     counting_in = time_diff < 0
 
@@ -97,7 +97,8 @@ defmodule GymTimerUiWeb.Clock do
       digit(m1, color) <>
         digit(m2, color) <> digit(":", color) <> digit(s1, color) <> digit(s2, color)
 
-    {:reply, clock, state}
+    new_state = Map.put(state, :clock, clock)
+    {:reply, new_state, new_state}
   end
 
   @impl true
@@ -114,13 +115,12 @@ defmodule GymTimerUiWeb.Clock do
     current_time = Timex.now()
 
     paused_time =
-      Map.get(state, :pause_start, current_time)
-      |> Time.diff(current_time)
+      Time.diff(current_time, Map.get(state, :pause_start, current_time))
       |> Kernel.+(Map.get(state, :paused_time, 0))
 
     time_diff =
       Time.diff(current_time, start_time)
-      |> Kernel.+(paused_time)
+      |> Kernel.-(paused_time)
 
     counting_in = time_diff < 0
 
@@ -145,14 +145,19 @@ defmodule GymTimerUiWeb.Clock do
       if counting_in, do: 0, else: time_diff_abs |> Integer.floor_div(total_period)
 
     interval_value =
-      if resting do
-        rest_period -
-          (time_diff_abs
-           |> Integer.mod(total_period)
-           |> Kernel.-(work_period)
-           |> Integer.mod(rest_period))
-      else
-        time_diff_abs |> Integer.mod(total_period) |> Integer.mod(work_period)
+      cond do
+        resting ->
+          rest_period -
+            (time_diff_abs
+             |> Integer.mod(total_period)
+             |> Kernel.-(work_period)
+             |> Integer.mod(rest_period))
+
+        counting_in ->
+          time_diff_abs
+
+        true ->
+          time_diff_abs |> Integer.mod(total_period) |> Integer.mod(work_period)
       end
 
     <<s1::binary-size(1)>> <> s2 =
@@ -171,7 +176,8 @@ defmodule GymTimerUiWeb.Clock do
       digit(m1, <<0, 255, 0>>) <>
         digit(m2, <<0, 255, 0>>) <> digit(":", color) <> digit(s1, color) <> digit(s2, color)
 
-    {:reply, clock, state}
+    new_state = Map.put(state, :clock, clock)
+    {:reply, new_state, new_state}
   end
 
   @impl true
@@ -185,58 +191,57 @@ defmodule GymTimerUiWeb.Clock do
         digit(d4, color) <>
         digit(d5, color)
 
-    {:reply, clock, state}
+    new_state = Map.put(state, :clock, clock)
+    {:reply, new_state, new_state}
   end
 
   @impl true
   def handle_call(:val, _from, state) do
-    color = <<0, 0, 0>>
-
     clock =
-      digit(:off, color) <>
-        digit(:off, color) <> digit(:off, color) <> digit(:off, color) <> digit(:off, color)
+      digit(:off, @blank) <>
+        digit(:off, @blank) <> digit(:off, @blank) <> digit(:off, @blank) <> digit(:off, @blank)
 
-    {:reply, clock, state}
-  end
-
-  @impl true
-  def handle_call(:clock_mode, _from, state) do
-    new_state = Map.merge(state, %{mode: :clock})
+    new_state = Map.put(state, :clock, clock)
     {:reply, new_state, new_state}
   end
 
   @impl true
-  def handle_call({:count_up_mode, count_in}, _from, state) do
+  def handle_call(:clock_mode, _from, _state) do
+    new_state = %{mode: :clock}
+    {:reply, new_state, new_state}
+  end
+
+  @impl true
+  def handle_call({:count_up_mode, count_in}, _from, _state) do
     start_time = Time.add(Timex.now(), count_in)
-    new_state = Map.merge(state, %{mode: :count_up, start_time: start_time, paused_time: 0})
+    new_state = %{mode: :count_up, start_time: start_time, paused_time: 0}
     {:reply, new_state, new_state}
   end
 
   @impl true
-  def handle_call({:test_mode, digits}, _from, state) do
-    new_state = Map.merge(state, %{mode: :test, digits: digits})
+  def handle_call({:test_mode, digits}, _from, _state) do
+    new_state = %{mode: :test, digits: digits}
     {:reply, digits, new_state}
   end
 
   @impl true
-  def handle_call({:interval_mode, work_period, rest_period, count_in}, _from, state) do
+  def handle_call({:interval_mode, work_period, rest_period, count_in}, _from, _state) do
     start_time = Time.add(Timex.now(), count_in)
 
-    new_state =
-      Map.merge(state, %{
-        mode: :interval,
-        start_time: start_time,
-        paused_time: 0,
-        work_period: work_period,
-        rest_period: rest_period
-      })
+    new_state = %{
+      mode: :interval,
+      start_time: start_time,
+      paused_time: 0,
+      work_period: work_period,
+      rest_period: rest_period
+    }
 
     {:reply, new_state, new_state}
   end
 
   @impl true
   def handle_call(:pause, _from, state) do
-    new_state = Map.merge(state, %{pause_start: Timex.now()})
+    new_state = Map.put(state, :pause_start, Timex.now())
 
     {:reply, :paused, new_state}
   end

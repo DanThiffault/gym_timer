@@ -17,7 +17,7 @@ defmodule GymTimerUiWeb.Router do
   scope "/", GymTimerUiWeb do
     pipe_through :browser
 
-    live "/", TimerLive, :index
+    live "/", TimerLive
   end
 
   # Other scopes may use custom stacks.

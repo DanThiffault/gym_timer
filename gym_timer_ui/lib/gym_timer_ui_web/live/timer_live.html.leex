@@ -1,8 +1,51 @@
-<div class="clock">
-  <%= for <<r::8, g::8 , b::8 <- @clock>> do %>
-    <% rgb_string = String.pad_leading(Integer.to_string(r, 16),2,"0") <> String.pad_leading(Integer.to_string(g, 16), 2, "0") <> String.pad_leading(Integer.to_string(b, 16),2, "0") %>
-    <div class="segment" style="background-color: #<%= rgb_string  %> ">&nbsp;</div>
-  <% end %>
+<div class="clock-container row">
+  <div class="clock column column-67">
+    <%= for <<r::8, g::8 , b::8 <- @clock>> do %>
+      <% rgb_string = String.pad_leading(Integer.to_string(r, 16),2,"0") <> String.pad_leading(Integer.to_string(g, 16), 2, "0") <> String.pad_leading(Integer.to_string(b, 16),2, "0") %>
+      <div class="segment" style="background-color: #<%= rgb_string  %> ">&nbsp;</div>
+    <% end %>
+  </div>
 </div>
 
-<div class="clearfix"></div>
+<div class="controls row">
+  <div class="column column-50">
+    <%= unless @paused do %>
+      <button class="button button-large" phx-click="pause">Pause</button>
+    <% else %>
+      <button class="button button-large" phx-click="unpause">Unpause</button>
+    <% end %>
+    <button class="button button-large" phx-click="count_up_form">Count Up</button>
+  </div>
+  <div class="column column-50">
+    <button class="button button-large" phx-click="clock_mode">Clock</button>
+    <button class="button button-large" phx-click="interval_form">Interval</button>
+  </div>
+</div>
+
+<%= case @form do %>
+  <% :count_up -> %> 
+    <div class="row">
+      <form action="#" phx-submit="count_up_mode" phx-change="save_form_state">
+        <fieldset>
+          <label for="count_in_input">Count in</label>
+          <input name="count_in_input" type="number" inputmode="numeric" pattern=[0-9]+" value="<%= @count_in_input %>">
+          <input class="button-primary" type="submit" value="Start Count up">
+        </fieldset>
+      </form>
+    </div>
+  <% :interval -> %> 
+    <div class="row">
+      <form action="#" phx-submit="interval_mode" phx-change="save_form_state">
+        <fieldset>
+          <label for="count_in_input">Count in</label>
+          <input name="count_in_input" type="number" inputmode="numeric" pattern=[0-9]+" value="<%= @count_in_input %>">
+          <label for="work_input">Work time</label>
+          <input name="work_input" type="number" inputmode="numeric" pattern=[0-9]+" value="<%= @work_input %>">
+          <label for="rest_input">Rest time</label>
+          <input name="rest_input" type="number" inputmode="numeric" pattern=[0-9]+" value="<%= @rest_input %>">
+          <input class="button-primary" type="submit" value="Start Interval">
+        </fieldset>
+      </form>
+    </div>
+    <% _ -> %>
+    <% end %>

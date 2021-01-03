@@ -100,311 +100,338 @@
     display: table;
 }
 
-.clock {
-    height: 7em;
-    width: 24em;
-    position: relative;
+.clock-container {
     background-color: black;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.clock {
+    height: 7rem;
+    width: 24rem;
+    position: relative;
+    background-color: #DEDEDE;
+    margin-left: 16.666% !important;
 }
 
 .segment {
     position: absolute;
-    height: 1em;
-    width: 1em;
+    height: 1rem;
+    width: 1rem;
 }
 
 /** 
 Digit 1
 **/
 .segment:nth-child(1) {
-    top: 2em;
+    top: 2rem;
     left: 0;
 }
 
 .segment:nth-child(2) {
-    top: 1em;
+    top: 1rem;
     left: 0;
 }
 
 .segment:nth-child(3) {
     top: 0;
-    left: 1em;
+    left: 1rem;
 }
 
 .segment:nth-child(4) {
     top: 0;
-    left: 2em;
+    left: 2rem;
 }
 
 .segment:nth-child(5) {
-    top: 1em;
-    left: 3em;
+    top: 1rem;
+    left: 3rem;
 }
 .segment:nth-child(6) {
-    top: 2em;
-    left: 3em;
+    top: 2rem;
+    left: 3rem;
 }
 
 .segment:nth-child(7) {
-    top: 3em;
-    left: 2em;
+    top: 3rem;
+    left: 2rem;
 }
 .segment:nth-child(8) {
-    top: 3em;
-    left: 1em;
+    top: 3rem;
+    left: 1rem;
 }
 
 .segment:nth-child(9) {
-    top: 4em;
+    top: 4rem;
     left: 0;
 }
 
 .segment:nth-child(10) {
-    top: 5em;
+    top: 5rem;
     left: 0;
 }
 
 .segment:nth-child(11) {
-    top: 6em;
-    left: 1em;
+    top: 6rem;
+    left: 1rem;
 }
 
 .segment:nth-child(12) {
-    top: 6em;
-    left: 2em;
+    top: 6rem;
+    left: 2rem;
 }
 
 .segment:nth-child(13) {
-    top: 5em;
-    left: 3em;
+    top: 5rem;
+    left: 3rem;
 }
 
 .segment:nth-child(14) {
-    top: 4em;
-    left: 3em;
+    top: 4rem;
+    left: 3rem;
 }
 
 /** 
 Digit 2
 **/
 .segment:nth-child(15) {
-    top: 2em;
-    left: 5em;
+    top: 2rem;
+    left: 5rem;
 }
 
 .segment:nth-child(16) {
-    top: 1em;
-    left: 5em;
+    top: 1rem;
+    left: 5rem;
 }
 
 .segment:nth-child(17) {
     top: 0;
-    left: 6em;
+    left: 6rem;
 }
 
 .segment:nth-child(18) {
     top: 0;
-    left: 7em;
+    left: 7rem;
 }
 
 .segment:nth-child(19) {
-    top: 1em;
-    left: 8em;
+    top: 1rem;
+    left: 8rem;
 }
 .segment:nth-child(20) {
-    top: 2em;
-    left: 8em;
+    top: 2rem;
+    left: 8rem;
 }
 
 .segment:nth-child(21) {
-    top: 3em;
-    left: 7em;
+    top: 3rem;
+    left: 7rem;
 }
 .segment:nth-child(22) {
-    top: 3em;
-    left: 6em;
+    top: 3rem;
+    left: 6rem;
 }
 
 .segment:nth-child(23) {
-    top: 4em;
-    left: 5em;
+    top: 4rem;
+    left: 5rem;
 }
 
 .segment:nth-child(24) {
-    top: 5em;
-    left: 5em;
+    top: 5rem;
+    left: 5rem;
 }
 
 .segment:nth-child(25) {
-    top: 6em;
-    left: 6em;
+    top: 6rem;
+    left: 6rem;
 }
 
 .segment:nth-child(26) {
-    top: 6em;
-    left: 7em;
+    top: 6rem;
+    left: 7rem;
 }
 
 .segment:nth-child(27) {
-    top: 5em;
-    left: 8em;
+    top: 5rem;
+    left: 8rem;
 }
 
 .segment:nth-child(28) {
-    top: 4em;
-    left: 8em;
+    top: 4rem;
+    left: 8rem;
 }
 
 /**
 Separator
 **/
 .segment:nth-child(29) {
-    top: 1.5em;
-    left: 12em;
+    top: 1.5rem;
+    left: 12rem;
 }
 .segment:nth-child(30) {
-    top: 4.5em;
-    left: 12em;
+    top: 4.5rem;
+    left: 12rem;
 }
 
 /** 
 Digit 3
 **/
 .segment:nth-child(31) {
-    top: 2em;
-    left: 15em;
+    top: 2rem;
+    left: 15rem;
 }
 
 .segment:nth-child(32) {
-    top: 1em;
-    left: 15em;
+    top: 1rem;
+    left: 15rem;
 }
 
 .segment:nth-child(33) {
     top: 0;
-    left: 16em;
+    left: 16rem;
 }
 
 .segment:nth-child(34) {
     top: 0;
-    left: 17em;
+    left: 17rem;
 }
 
 .segment:nth-child(35) {
-    top: 1em;
-    left: 18em;
+    top: 1rem;
+    left: 18rem;
 }
 .segment:nth-child(36) {
-    top: 2em;
-    left: 18em;
+    top: 2rem;
+    left: 18rem;
 }
 
 .segment:nth-child(37) {
-    top: 3em;
-    left: 17em;
+    top: 3rem;
+    left: 17rem;
 }
 .segment:nth-child(38) {
-    top: 3em;
-    left: 16em;
+    top: 3rem;
+    left: 16rem;
 }
 
 .segment:nth-child(39) {
-    top: 4em;
-    left: 15em;
+    top: 4rem;
+    left: 15rem;
 }
 
 .segment:nth-child(40) {
-    top: 5em;
-    left: 15em;
+    top: 5rem;
+    left: 15rem;
 }
 
 .segment:nth-child(41) {
-    top: 6em;
-    left: 16em;
+    top: 6rem;
+    left: 16rem;
 }
 
 .segment:nth-child(42) {
-    top: 6em;
-    left: 17em;
+    top: 6rem;
+    left: 17rem;
 }
 
 .segment:nth-child(43) {
-    top: 5em;
-    left: 18em;
+    top: 5rem;
+    left: 18rem;
 }
 
 .segment:nth-child(44) {
-    top: 4em;
-    left: 18em;
+    top: 4rem;
+    left: 18rem;
 }
 
 /** 
 Digit 4
 **/
 .segment:nth-child(45) {
-    top: 2em;
-    left: 20em;
+    top: 2rem;
+    left: 20rem;
 }
 
 .segment:nth-child(46) {
-    top: 1em;
-    left: 20em;
+    top: 1rem;
+    left: 20rem;
 }
 
 .segment:nth-child(47) {
     top: 0;
-    left: 21em;
+    left: 21rem;
 }
 
 .segment:nth-child(48) {
     top: 0;
-    left: 22em;
+    left: 22rem;
 }
 
 .segment:nth-child(49) {
-    top: 1em;
-    left: 23em;
+    top: 1rem;
+    left: 23rem;
 }
 .segment:nth-child(50) {
-    top: 2em;
-    left: 23em;
+    top: 2rem;
+    left: 23rem;
 }
 
 .segment:nth-child(51) {
-    top: 3em;
-    left: 22em;
+    top: 3rem;
+    left: 22rem;
 }
 .segment:nth-child(52) {
-    top: 3em;
-    left: 21em;
+    top: 3rem;
+    left: 21rem;
 }
 
 .segment:nth-child(53) {
-    top: 4em;
-    left: 20em;
+    top: 4rem;
+    left: 20rem;
 }
 
 .segment:nth-child(54) {
-    top: 5em;
-    left: 20em;
+    top: 5rem;
+    left: 20rem;
 }
 
 .segment:nth-child(55) {
-    top: 6em;
-    left: 21em;
+    top: 6rem;
+    left: 21rem;
 }
 
 .segment:nth-child(56) {
-    top: 6em;
-    left: 22em;
+    top: 6rem;
+    left: 22rem;
 }
 
 .segment:nth-child(57) {
-    top: 5em;
-    left: 23em;
+    top: 5rem;
+    left: 23rem;
 }
 
 .segment:nth-child(58) {
-    top: 4em;
-    left: 23em;
+    top: 4rem;
+    left: 23rem;
+}
+
+.controls {
+    margin-top: 1em;
+}
+
+.button-large {
+    font-size: 2rem;
+    height: 12rem;
+    width: 15rem;
+    line-height: 6rem;
+    padding: 0 2.7rem;
+}
+
+.footer {
+    margin-top: 6rem;
+}
+
+label, input {
+    width: 100%
 }
