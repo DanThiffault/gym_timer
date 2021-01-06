@@ -24,7 +24,7 @@ keys =
     Path.join([System.user_home!(), ".ssh", "id_rsa.pub"]),
     Path.join([System.user_home!(), ".ssh", "id_ecdsa.pub"]),
     Path.join([System.user_home!(), ".ssh", "id_ed25519.pub"]),
-    Path.join([System.user_home!(), ".ssh", "danthiffault.pub"])
+    Path.join([System.user_home!(), ".ssh", "nerves_key_ecdsa.pub"])
   ]
   |> Enum.filter(&File.exists?/1)
 
@@ -44,13 +44,7 @@ config :nerves_ssh,
 config :vintage_net,
   regulatory_domain: "US",
   config: [
-    {"usb0", %{type: VintageNetDirect}},
-    {"eth0",
-     %{
-       type: VintageNetEthernet,
-       ipv4: %{method: :dhcp}
-     }},
-    {"wlan0", %{type: VintageNetWiFi}}
+    {"usb0", %{type: VintageNetDirect}}
   ]
 
 config :mdns_lite,

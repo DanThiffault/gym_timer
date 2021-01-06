@@ -26,28 +26,29 @@ config :nerves, source_date_epoch: "1606057517"
 
 # config :logger, backends: [RingLogger]
 
-config :shoehorn, init: [:nerves_runtime, :nerves_pack], app: Mix.Project.config()[:app]
+config :shoehorn,
+  init: [:nerves_runtime, :nerves_pack, :nerves_ssh],
+  app: Mix.Project.config()[:app]
 
 if Mix.target() != :host do
   import_config "target.exs"
 end
 
-# config :gym_timer_ui, GymTimerUiWeb.Endpoint,
-#  # Nerves root filesystem is read-only, so disable the code reloader
-#  code_reloader: false,
-#  http: [port: 80],
-#  # Use compile-time Mix config instead of runtime environment variables
-#  load_from_system_env: false,
-#  # Start the server since we're running in a release instead of through `mix`
-#  server: true,
-#  url: [host: "nerves.local", port: 80],
-#  secret_key_base: "UB31SyWoXqhUbvYQ30YPrdQ4m133/2aPvhUkPka6LI1QBqOWVwBM7el5imZ1+fF5",
-#  render_errors: [view: GymTimerUiWeb.ErrorView, accepts: ~w(html json), layout: false],
-#  pubsub_server: GymTimerUi.PubSub,
-#  live_view: [signing_salt: "h2XE/BM1"]
+config :gym_timer_ui, GymTimerUiWeb.Endpoint,
+  # Nerves root filesystem is read-only, so disable the code reloader
+  code_reloader: false,
+  http: [port: 80],
+  # Use compile-time Mix config instead of runtime environment variables
+  load_from_system_env: false,
+  # Start the server since we're running in a release instead of through `mix`
+  server: true,
+  url: [host: "nerves.local", port: 80],
+  secret_key_base: "UB31SyWoXqhUbvYQ30YPrdQ4m133/2aPvhUkPka6LI1QBqOWVwBM7el5imZ1+fF5",
+  render_errors: [view: GymTimerUiWeb.ErrorView, accepts: ~w(html json), layout: false],
+  pubsub_server: GymTimerUi.PubSub,
+  live_view: [signing_salt: "h2XE/BM1"]
 
-config :blinkchain,
-  canvas: {30, 1}
+config :blinkchain, canvas: {30, 1}
 
 config :blinkchain, :channel1,
   pin: 13,

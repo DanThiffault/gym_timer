@@ -76,11 +76,6 @@ defmodule GymTimerUiWeb.TimerLive do
     {:noreply, assign(socket, form: nil)}
   end
 
-  def handle_event("interval_mode", _value, socket) do
-    Clock.interval_mode(30, 30, socket.count_in)
-    {:noreply, socket}
-  end
-
   def assign_current_time(socket) do
     state = %{clock: clock} = GymTimerUiWeb.Clock.val()
     paused = Map.has_key?(state, :pause_start)

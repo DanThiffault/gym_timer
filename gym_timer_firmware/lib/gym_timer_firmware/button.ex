@@ -35,7 +35,7 @@ defmodule GymTimerFirmware.Button do
   end
 
   def handle_info(:timeout, state) do
-    :ok = VintageNetWizard.run_wizard(device_info: get_device_info())
+    # :ok = VintageNetWizard.run_wizard(device_info: get_device_info())
     {:noreply, state}
   end
 
