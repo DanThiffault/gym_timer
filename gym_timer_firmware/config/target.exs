@@ -44,8 +44,11 @@ config :nerves_ssh,
 config :vintage_net,
   regulatory_domain: "US",
   config: [
-    {"usb0", %{type: VintageNetDirect}}
+    {"usb0", %{type: VintageNetDirect}},
+    {"wlan0", %{type: VintageNetWiFi}}
   ]
+
+config :vintage_net_wizard, ssid: "GYM_TIMER", port: 4000, captive_portal: false
 
 config :mdns_lite,
   # The `host` key specifies what hostnames mdns_lite advertises.  `:hostname`

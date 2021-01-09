@@ -65,3 +65,10 @@ config :blinkchain, :channel1,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+config :nerves_time, :servers, [
+  "0.pool.ntp.org",
+  "1.pool.ntp.org",
+  "2.pool.ntp.org",
+  "3.pool.ntp.org"
+]

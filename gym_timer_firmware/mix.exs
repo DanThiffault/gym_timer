@@ -52,7 +52,8 @@ defmodule GymTimerFirmware.MixProject do
       {:nerves_system_osd32mp1, "~> 0.4", runtime: false, targets: :osd32mp1},
       {:nerves_system_x86_64, "~> 1.13", runtime: false, targets: :x86_64},
       {:vintage_net, "~> 0.9"},
-      # {:vintage_net_wizard, "~> 0.4"},
+      {:vintage_net_wizard, "~> 0.4"},
+      {:nerves_time, "~> 0.4.2"},
       {:blinkchain, "~> 1.0"},
       {:gym_timer_ui, path: "../gym_timer_ui"}
     ]
