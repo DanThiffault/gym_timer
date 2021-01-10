@@ -24,7 +24,7 @@ config :nerves, source_date_epoch: "1606057517"
 # See https://hexdocs.pm/ring_logger/readme.html for more information on
 # configuring ring_logger.
 
-# config :logger, backends: [RingLogger]
+config :logger, backends: [RingLogger]
 
 config :shoehorn,
   init: [:nerves_runtime, :nerves_pack, :nerves_ssh],
@@ -42,7 +42,7 @@ config :gym_timer_ui, GymTimerUiWeb.Endpoint,
   load_from_system_env: false,
   # Start the server since we're running in a release instead of through `mix`
   server: true,
-  url: [host: "nerves.local", port: 80],
+  url: [host: "gym_timer.local", port: 80],
   secret_key_base: "UB31SyWoXqhUbvYQ30YPrdQ4m133/2aPvhUkPka6LI1QBqOWVwBM7el5imZ1+fF5",
   render_errors: [view: GymTimerUiWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: GymTimerUi.PubSub,
@@ -72,3 +72,5 @@ config :nerves_time, :servers, [
   "2.pool.ntp.org",
   "3.pool.ntp.org"
 ]
+
+config :blinkchain, canvas: {30, 1}, pin: 18

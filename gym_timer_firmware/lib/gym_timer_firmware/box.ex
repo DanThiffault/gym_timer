@@ -11,7 +11,7 @@ defmodule GymTimerFirmware.Box do
     {:ok, %{}}
   end
 
-  def handle_info(:tick, socket) do
+  def handle_info(:tick, state) do
     %{clock: clock} = GymTimerUiWeb.Clock.val()
     colors = for <<r::8, g::8, b::8 <- clock>>, do: %Blinkchain.Color{r: r, g: g, b: b}
 
@@ -21,6 +21,6 @@ defmodule GymTimerFirmware.Box do
 
     Blinkchain.render()
 
-    {:ok, socket}
+    {:noreply, state}
   end
 end

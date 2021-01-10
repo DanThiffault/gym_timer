@@ -17,19 +17,13 @@ defmodule GymTimerFirmware.Application do
         # Children for all targets
         # Starts a worker by calling: GymTimerFirmware.Worker.start_link(arg)
         # ,
-        # {GymTimerFirmware.Worker}
+        GymTimerFirmware.Box
       ] ++ children(target())
 
     Supervisor.start_link(children, opts)
   end
 
   def handle_on_exit() do
-    # new_config =
-    #  Application.get_env(:gym_timer_ui, GymTimerUiWeb.Endpoint) |> Keyword.put(:server, true)
-
-    # Application.put_env(:gym_timer_ui, GymTimerUiWeb.Endpoint, new_config, persistent: true)
-    # Application.stop(:gym_timer_ui)
-    # Application.ensure_all_started(:gym_timer_ui)
   end
 
   # List all child processes to be supervised
