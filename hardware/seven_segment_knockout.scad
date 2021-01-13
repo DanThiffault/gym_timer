@@ -103,23 +103,19 @@ difference() {
         }   
     }
     
-    // border
-    translate([margin/2-1,margin/2-1, 11]) {
-        cube([u*6+border*2+margin/2+1+border,2,4]);
+    // mounting holes
+    translate([10,10,0]) {
+        cylinder(h=15, d=5.2);
     }
-    
-    translate([margin/2-1, margin/2-1, 11]) {
-        cube([2,u*10+border*2+margin/2+1+border,4]);
+    translate([u*6+margin*2+border*2-10,10,0]) {
+        cylinder(h=15, d=5.2);
     }
-    
-    translate([margin/2-1,u*10+margin*2+border*2 -(margin/2+1), 11]) {
-        cube([u*6+border*2+margin/2+1+border,2,4]);
+    translate([10,u*10+margin*2+border*2-10,0]) {
+        cylinder(h=15, d=5.2);
     }
-    
-    translate([(u*6+margin*2+border*2)-(margin/2+1), margin/2-1, 11]) {
-        cube([2,u*10+border*2+margin/2+1+border+1.5,4]);
+    translate([u*6+margin*2+border*2-10,u*10+margin*2+border*2-10,0]) {
+        cylinder(h=15, d=5.2);
     }
-
 }
 
     
