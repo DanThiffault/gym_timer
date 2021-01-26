@@ -34,6 +34,8 @@ if Mix.target() != :host do
   import_config "target.exs"
 end
 
+config :tzdata, :data_dir, "/root/storage"
+
 config :gym_timer_ui, GymTimerUiWeb.Endpoint,
   # Nerves root filesystem is read-only, so disable the code reloader
   code_reloader: false,
@@ -48,17 +50,30 @@ config :gym_timer_ui, GymTimerUiWeb.Endpoint,
   pubsub_server: GymTimerUi.PubSub,
   live_view: [signing_salt: "h2XE/BM1"]
 
-config :blinkchain, canvas: {30, 1}
+config :blinkchain, canvas: {2, 2}, dma_channel: 9
 
-config :blinkchain, :channel1,
-  pin: 13,
+config :blinkchain, :channel0,
+  pin: 18,
   type: :grb,
-  brightness: 32,
+  brightness: 100,
   arrangement: [
     %{
       type: :strip,
       origin: {0, 0},
-      count: 30,
+      count: 2,
+      direction: :right
+    }
+  ]
+
+config :blinkchain, :channel1,
+  pin: 13,
+  type: :grb,
+  brightness: 100,
+  arrangement: [
+    %{
+      type: :strip,
+      origin: {0, 1},
+      count: 2,
       direction: :right
     }
   ]
@@ -72,5 +87,3 @@ config :nerves_time, :servers, [
   "2.pool.ntp.org",
   "3.pool.ntp.org"
 ]
-
-config :blinkchain, canvas: {30, 1}, pin: 18

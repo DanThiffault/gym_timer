@@ -4,38 +4,57 @@ border=2;
 
 difference() {
     union() {
-        cube([u*6+margin*2+border*2,u*10+margin*2+border*2,56.3]);
-        translate([u*6+margin*2+border*2,1.3,1.3]) {
-          cube([5,u*10+margin*2+border*2-2.6,40-1.3]);
-        };
+        cube([u*6+margin*2+border*2,u*10+margin*2+border*2,50]);
     };
     
     //main cutout
-    difference() {
-        translate([4,4,5]) {
-            cube([u*6+margin*2+border*2-8,u*10+margin*2+border*2-8,51.3]);
-        };
-        translate([((87-58)/2)-5,((134-58)/2)-5,0]) {
-          cube([68,68,30]);
-        };
-    }
+    translate([3,3,22]) {
+        cube([u*6+margin*2+border*2-6,u*10+margin*2+border*2-6,28]);
+    };
     
     //speaker stands
-    translate([(87-58)/2,(134-58)/2,0]) {
-        cylinder(h=30,d=5.2);
+    translate([(87-58)/2,(134-58)/2,17]) {
+        cylinder(h=8, d=5);
     }
-    translate([(87-58)/2+58,(134-58)/2,0]) {
-        cylinder(h=30,d=5.2);
+    translate([(87-58)/2+58,(134-58)/2,17]) {
+        cylinder(h=8, d=5);
     }
-    translate([(87-58)/2,(134-58)/2+58,0]) {
-        cylinder(h=30,d=5.2);
+    translate([(87-58)/2,(134-58)/2+58,17]) {
+        cylinder(h=8, d=5);
     }
-    translate([(87-58)/2+58,(134-58)/2+58,0]) {
-        cylinder(h=30,d=5.2);
+    translate([(87-58)/2+58,(134-58)/2+58,17]) {
+        cylinder(h=8, d=5);
+    }    
+    
+    //back mounting bracket
+    translate([10,10,0]) {
+        cylinder(h=8, d=5);
+    }
+    translate([u*6+margin*2+border*2-10,10,0]) {
+        cylinder(h=8, d=5);
+    }
+    translate([10,u*10+margin*2+border*2-10,0]) {
+        cylinder(h=8, d=5);
+    }
+    translate([u*6+margin*2+border*2-10,u*10+margin*2+border*2-10,0]) {
+        cylinder(h=8, d=5);
+    }
+    
+    //power cutout
+    translate([0,15,10]) {
+        cube([15,9.3,11.2]);        
+    }    
+    //power cutout pins
+    translate([6,15,6]) {
+        cube([9,9.3,4]);
+    }    
+    //power cable run
+    translate([15,15,10]) {
+        cube([86-14.5,9.3,2]);        
     }    
     
     //speaker magnet
-    translate([(87-58)/2+(58-33)/2+16,(134-58)/2+(58-33)/2+16,20]) {
+    translate([87/2-33/2+16,134/2-33/2+16,12]) {
         cylinder(h=10,d=33);
     }
     

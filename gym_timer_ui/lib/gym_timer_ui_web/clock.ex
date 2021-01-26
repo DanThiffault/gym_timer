@@ -1,7 +1,7 @@
 defmodule GymTimerUiWeb.Clock do
   use GenServer
 
-  @blank <<222, 222, 222>>
+  @blank <<0, 0, 0>>
 
   def start_link(state) do
     GenServer.start_link(__MODULE__, state, name: __MODULE__)

@@ -16,15 +16,11 @@ module hex (unit=20,height=10) {
 module hex_with_holes(unit, height) {
     translate([2,2,0]) {
         hex(unit,10);    
-        translate([unit,unit/2-1,-5]) {
-            linear_extrude(5) {
-                circle(d=4);
-            }
+        translate([unit,unit/2,-5]) {
+            cylinder(d=5, h=5);
         }
         translate([unit,3*unit+4,-5]) {
-            linear_extrude(5) {
-                circle(d=4);
-            }
+            cylinder(d=5, h=5);
         }
     };
 }
@@ -80,12 +76,12 @@ difference() {
         cube([u*2-4,u*2-4,10]);        
         translate([u*2-8,4,-5]) {
             linear_extrude(5) {
-                circle(d=4);
+                circle(d=5);
             }
         }   
         translate([4,u*2-8,-5]) {
             linear_extrude(5) {
-                circle(d=4);
+                circle(d=5);
             }
         }   
     }
@@ -93,28 +89,28 @@ difference() {
         cube([u*2-4,u*2-4,10]);        
         translate([u*2-8,4,-5]) {
             linear_extrude(5) {
-                circle(d=4);
+                circle(d=5);
             }
         }   
         translate([4,u*2-8,-5]) {
             linear_extrude(5) {
-                circle(d=4);
+                circle(d=5);
             }
         }   
     }
     
     // mounting holes
-    translate([10,10,0]) {
-        cylinder(h=15, d=5.2);
+    translate([10,10,7]) {
+        cylinder(h=8, d=5);
     }
-    translate([u*6+margin*2+border*2-10,10,0]) {
-        cylinder(h=15, d=5.2);
+    translate([u*6+margin*2+border*2-10,10,7]) {
+        cylinder(h=8, d=5);
     }
-    translate([10,u*10+margin*2+border*2-10,0]) {
-        cylinder(h=15, d=5.2);
+    translate([10,u*10+margin*2+border*2-10,7]) {
+        cylinder(h=8, d=5);
     }
-    translate([u*6+margin*2+border*2-10,u*10+margin*2+border*2-10,0]) {
-        cylinder(h=15, d=5.2);
+    translate([u*6+margin*2+border*2-10,u*10+margin*2+border*2-10,7]) {
+        cylinder(h=8, d=5);
     }
 }
 
