@@ -48,7 +48,7 @@ config :vintage_net,
     {"wlan0", %{type: VintageNetWiFi}}
   ]
 
-config :vintage_net_wizard, ssid: "GYM_TIMER", port: 4000, captive_portal: false
+config :vintage_net_wizard, ssid: "GYM_TIMER", port: 80, captive_portal: true
 
 config :mdns_lite,
   # The `host` key specifies what hostnames mdns_lite advertises.  `:hostname`

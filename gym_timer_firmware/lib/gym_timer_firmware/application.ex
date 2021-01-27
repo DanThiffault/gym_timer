@@ -3,10 +3,12 @@ defmodule GymTimerFirmware.Application do
   # for more information on OTP Applications
   @moduledoc false
 
+  require Logger
+
   use Application
 
   def start(_type, _args) do
-    VintageNetWizard.run_wizard(on_exit: {__MODULE__, :handle_wizard_exit, []})
+    gpio_pin = Application.get_env(:net_wizard_button, :gpio_pin, 24)
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
@@ -17,13 +19,11 @@ defmodule GymTimerFirmware.Application do
         # Children for all targets
         # Starts a worker by calling: GymTimerFirmware.Worker.start_link(arg)
         # ,
-        GymTimerFirmware.Box
+        GymTimerFirmware.Box,
+        {GymTimerFirmware.Button, gpio_pin}
       ] ++ children(target())
 
     Supervisor.start_link(children, opts)
-  end
-
-  def handle_on_exit() do
   end
 
   # List all child processes to be supervised

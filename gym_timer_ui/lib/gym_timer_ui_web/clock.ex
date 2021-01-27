@@ -19,8 +19,8 @@ defmodule GymTimerUiWeb.Clock do
     GenServer.call(__MODULE__, {:count_up_mode, count_in})
   end
 
-  def test_mode(digits) do
-    GenServer.call(__MODULE__, {:test_mode, digits})
+  def test_mode(digits, color) do
+    GenServer.call(__MODULE__, {:test_mode, digits, color})
   end
 
   def interval_mode(work_period, rest_period \\ 0, count_in \\ 10) do
@@ -181,9 +181,7 @@ defmodule GymTimerUiWeb.Clock do
   end
 
   @impl true
-  def handle_call(:val, _from, state = %{mode: :test, digits: [d1, d2, d3, d4, d5]}) do
-    color = <<0, 255, 255>>
-
+  def handle_call(:val, _from, state = %{mode: :test, digits: [d1, d2, d3, d4, d5], color: color}) do
     clock =
       digit(d1, color) <>
         digit(d2, color) <>
@@ -219,8 +217,8 @@ defmodule GymTimerUiWeb.Clock do
   end
 
   @impl true
-  def handle_call({:test_mode, digits}, _from, _state) do
-    new_state = %{mode: :test, digits: digits}
+  def handle_call({:test_mode, digits, color}, _from, _state) do
+    new_state = %{mode: :test, digits: digits, color: color}
     {:reply, digits, new_state}
   end
 

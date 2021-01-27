@@ -50,7 +50,7 @@ config :gym_timer_ui, GymTimerUiWeb.Endpoint,
   pubsub_server: GymTimerUi.PubSub,
   live_view: [signing_salt: "h2XE/BM1"]
 
-config :blinkchain, canvas: {2, 2}, dma_channel: 9
+config :blinkchain, canvas: {30, 2}, dma_channel: 9
 
 config :blinkchain, :channel0,
   pin: 18,
@@ -60,7 +60,7 @@ config :blinkchain, :channel0,
     %{
       type: :strip,
       origin: {0, 0},
-      count: 2,
+      count: 30,
       direction: :right
     }
   ]
@@ -73,7 +73,7 @@ config :blinkchain, :channel1,
     %{
       type: :strip,
       origin: {0, 1},
-      count: 2,
+      count: 30,
       direction: :right
     }
   ]

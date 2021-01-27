@@ -1,6 +1,8 @@
 defmodule GymTimerFirmware.Button do
   use GenServer
 
+  require Logger
+
   @moduledoc """
   This GenServer starts the wizard if a button is depressed for long enough.
   """
@@ -35,8 +37,33 @@ defmodule GymTimerFirmware.Button do
   end
 
   def handle_info(:timeout, state) do
-    # :ok = VintageNetWizard.run_wizard(device_info: get_device_info())
+    config =
+      Application.get_env(:gym_timer_ui, GymTimerUiWeb.Endpoint) |> Keyword.merge(server: false)
+
+    Application.put_env(:gym_timer_ui, GymTimerUiWeb.Endpoint, config)
+
+    Application.stop(:gym_timer_ui)
+    Application.start(:gym_timer_ui)
+
+    :ok =
+      VintageNetWizard.run_wizard(
+        device_info: get_device_info(),
+        on_exit: {__MODULE__, :handle_wizard_exit, []}
+      )
+
     {:noreply, state}
+  end
+
+  def handle_wizard_exit() do
+    Logger.info("handle_on_exit")
+
+    config =
+      Application.get_env(:gym_timer_ui, GymTimerUiWeb.Endpoint) |> Keyword.merge(server: true)
+
+    Application.put_env(:gym_timer_ui, GymTimerUiWeb.Endpoint, config)
+
+    Application.stop(:gym_timer_ui)
+    Application.start(:gym_timer_ui)
   end
 
   defp get_device_info() do
