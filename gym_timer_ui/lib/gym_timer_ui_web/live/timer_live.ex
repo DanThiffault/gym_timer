@@ -11,6 +11,7 @@ defmodule GymTimerUiWeb.TimerLive do
       assign_current_time(socket)
       |> assign(:form, nil)
       |> assign(:count_in_input, 10)
+      |> assign(:count_down_input, 600)
       |> assign(:work_input, 30)
       |> assign(:rest_input, 30)
 
@@ -37,12 +38,14 @@ defmodule GymTimerUiWeb.TimerLive do
 
   def handle_event("save_form_state", values, socket) do
     new_count_in = values |> Map.get("count_in_input", socket.assigns.count_in_input)
+    new_count_down = values |> Map.get("count_down_input", socket.assigns.count_down_input)
     new_work = values |> Map.get("work_input", socket.assigns.work_input)
     new_rest = values |> Map.get("rest_input", socket.assigns.rest_input)
 
     new_socket =
       socket
       |> assign(:count_in_input, new_count_in)
+      |> assign(:count_down_input, new_count_down)
       |> assign(:work_input, new_work)
       |> assign(:rest_input, new_rest)
 
@@ -53,12 +56,23 @@ defmodule GymTimerUiWeb.TimerLive do
     {:noreply, assign(socket, form: :count_up)}
   end
 
+  def handle_event("count_down_form", _value, socket) do
+    {:noreply, assign(socket, form: :count_down)}
+  end
+
   def handle_event("interval_form", _value, socket) do
     {:noreply, assign(socket, form: :interval)}
   end
 
   def handle_event("count_up_mode", values, socket) do
     values |> Map.get("count_in_input", "3") |> String.to_integer() |> Clock.count_up_mode()
+    {:noreply, assign(socket, form: nil)}
+  end
+
+  def handle_event("count_down_mode", values, socket) do
+    count_in = values |> Map.get("count_in_input", "3") |> String.to_integer()
+    count_down_input = values |> Map.get("count_down_input", "10") |> String.to_integer()
+    Clock.count_down_mode(count_down_input, count_in)
     {:noreply, assign(socket, form: nil)}
   end
 

@@ -14,7 +14,8 @@
     <% else %>
       <button class="button button-large" phx-click="unpause">Unpause</button>
     <% end %>
-    <button class="button button-large" phx-click="count_up_form">Count Up</button>
+    <button class="button button-large" phx-click="count_up_form">Up</button>
+    <button class="button button-large" phx-click="count_down_form">Down</button>
   </div>
   <div class="column column-50">
     <button class="button button-large" phx-click="clock_mode">Clock</button>
@@ -30,6 +31,18 @@
           <label for="count_in_input">Count in</label>
           <input name="count_in_input" type="number" inputmode="numeric" pattern=[0-9]+" value="<%= @count_in_input %>">
           <input class="button-primary" type="submit" value="Start Count up">
+        </fieldset>
+      </form>
+    </div>  
+  <% :count_down -> %> 
+    <div class="row">
+      <form action="#" phx-submit="count_down_mode" phx-change="save_form_state">
+        <fieldset>
+          <label for="count_in_input">Count in</label>
+          <input name="count_in_input" type="number" inputmode="numeric" pattern=[0-9]+" value="<%= @count_in_input %>">
+           <label for="count_down_input">Count down from</label>
+          <input name="count_down_input" type="number" inputmode="numeric" pattern=[0-9]+" value="<%= @count_down_input %>">
+          <input class="button-primary" type="submit" value="Start Count Down">
         </fieldset>
       </form>
     </div>

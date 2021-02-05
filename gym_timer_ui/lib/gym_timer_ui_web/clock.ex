@@ -19,6 +19,10 @@ defmodule GymTimerUiWeb.Clock do
     GenServer.call(__MODULE__, {:count_up_mode, count_in})
   end
 
+  def count_down_mode(count_down_from \\ 600, count_in \\ 10) do
+    GenServer.call(__MODULE__, {:count_down_mode, count_down_from, count_in})
+  end
+
   def test_mode(digits, color) do
     GenServer.call(__MODULE__, {:test_mode, digits, color})
   end
@@ -88,6 +92,49 @@ defmodule GymTimerUiWeb.Clock do
 
     <<m1::binary-size(1)>> <> m2 =
       time_diff_abs
+      |> Integer.floor_div(60)
+      |> Integer.mod(99)
+      |> Integer.to_string()
+      |> String.pad_leading(2, "0")
+
+    clock =
+      digit(m1, color) <>
+        digit(m2, color) <> digit(":", color) <> digit(s1, color) <> digit(s2, color)
+
+    new_state = Map.put(state, :clock, clock)
+    {:reply, new_state, new_state}
+  end
+
+  @impl true
+  def handle_call(:val, _from, state = %{mode: :count_down}) do
+    current_time = Timex.now()
+    start_time = Map.get(state, :start_time, current_time)
+
+    paused_time =
+      Time.diff(current_time, Map.get(state, :pause_start, current_time))
+      |> Kernel.+(Map.get(state, :paused_time, 0))
+
+    time_diff =
+      Time.diff(current_time, start_time)
+      |> Kernel.-(paused_time)
+
+    counting_in = time_diff < 0
+
+    color = if counting_in, do: <<0, 255, 0>>, else: <<255, 0, 0>>
+    time_diff_abs = if counting_in, do: time_diff * -1, else: time_diff
+
+    count_down_from = Map.get(state, :count_down_from)
+    starting_value = if counting_in, do: time_diff_abs, else: count_down_from - time_diff_abs
+    # TODO: Stop at zero
+
+    <<s1::binary-size(1)>> <> s2 =
+      starting_value
+      |> Integer.mod(60)
+      |> Integer.to_string()
+      |> String.pad_leading(2, "0")
+
+    <<m1::binary-size(1)>> <> m2 =
+      starting_value
       |> Integer.floor_div(60)
       |> Integer.mod(99)
       |> Integer.to_string()
@@ -213,6 +260,20 @@ defmodule GymTimerUiWeb.Clock do
   def handle_call({:count_up_mode, count_in}, _from, _state) do
     start_time = Time.add(Timex.now(), count_in)
     new_state = %{mode: :count_up, start_time: start_time, paused_time: 0}
+    {:reply, new_state, new_state}
+  end
+
+  @impl true
+  def handle_call({:count_down_mode, count_down_from, count_in}, _from, _state) do
+    start_time = Time.add(Timex.now(), count_in)
+
+    new_state = %{
+      mode: :count_down,
+      start_time: start_time,
+      paused_time: 0,
+      count_down_from: count_down_from
+    }
+
     {:reply, new_state, new_state}
   end
 
