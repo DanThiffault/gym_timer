@@ -4,12 +4,12 @@ border=2;
 
 difference() {
     union() {
-        cube([u*6+margin*2+border*2,u*10+margin*2+border*2,50]);
+        cube([u*6+margin*2+border*2,u*10+margin*2+border*2,55]);
     };
     
     //main cutout
     translate([3,3,22]) {
-        cube([u*6+margin*2+border*2-6,u*10+margin*2+border*2-6,28]);
+        cube([u*6+margin*2+border*2-6,u*10+margin*2+border*2-6,33]);
     };
     
     //speaker stands
