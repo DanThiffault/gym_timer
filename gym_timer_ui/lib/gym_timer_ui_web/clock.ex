@@ -124,28 +124,56 @@ defmodule GymTimerUiWeb.Clock do
     time_diff_abs = if counting_in, do: time_diff * -1, else: time_diff
 
     count_down_from = Map.get(state, :count_down_from)
-    starting_value = if counting_in, do: time_diff_abs, else: count_down_from - time_diff_abs
-    # TODO: Stop at zero
 
-    <<s1::binary-size(1)>> <> s2 =
-      starting_value
-      |> Integer.mod(60)
-      |> Integer.to_string()
-      |> String.pad_leading(2, "0")
+    starting_value =
+      cond do
+        counting_in ->
+          time_diff_abs
 
-    <<m1::binary-size(1)>> <> m2 =
-      starting_value
-      |> Integer.floor_div(60)
-      |> Integer.mod(99)
-      |> Integer.to_string()
-      |> String.pad_leading(2, "0")
+        count_down_from - time_diff_abs > 0 ->
+          count_down_from - time_diff_abs
 
-    clock =
-      digit(m1, color) <>
-        digit(m2, color) <> digit(":", color) <> digit(s1, color) <> digit(s2, color)
+        count_down_from - time_diff_abs > -5 ->
+          {us, precision} = DateTime.to_time(Timex.now()).microsecond
+          value = if us / :math.pow(10, precision) < 0.5, do: 0, else: -2
 
-    new_state = Map.put(state, :clock, clock)
-    {:reply, new_state, new_state}
+        true ->
+          -1
+      end
+
+    case starting_value do
+      -1 ->
+        handle_call(:val, nil, %{mode: :clock})
+
+      -2 ->
+        clock =
+          digit("", color) <>
+            digit("", color) <> digit("", color) <> digit("", color) <> digit("", color)
+
+        new_state = Map.put(state, :clock, clock)
+        {:reply, new_state, new_state}
+
+      _ ->
+        <<s1::binary-size(1)>> <> s2 =
+          starting_value
+          |> Integer.mod(60)
+          |> Integer.to_string()
+          |> String.pad_leading(2, "0")
+
+        <<m1::binary-size(1)>> <> m2 =
+          starting_value
+          |> Integer.floor_div(60)
+          |> Integer.mod(99)
+          |> Integer.to_string()
+          |> String.pad_leading(2, "0")
+
+        clock =
+          digit(m1, color) <>
+            digit(m2, color) <> digit(":", color) <> digit(s1, color) <> digit(s2, color)
+
+        new_state = Map.put(state, :clock, clock)
+        {:reply, new_state, new_state}
+    end
   end
 
   @impl true
