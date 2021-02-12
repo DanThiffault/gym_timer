@@ -91,9 +91,17 @@ defmodule GymTimerUiWeb.TimerLive do
   end
 
   def assign_current_time(socket) do
-    state = %{clock: clock} = GymTimerUiWeb.Clock.val()
+    %{clock: clock} = GymTimerUiWeb.Clock.val()
+
+    digits =
+      for <<r::8, g::8, b::8 <- clock>> do
+        {r, g, b}
+      end
+      |> Enum.chunk_every(16)
+
+    state = %{digits: digits}
     paused = Map.has_key?(state, :pause_start)
 
-    assign(socket, clock: clock, paused: paused)
+    assign(socket, digits: digits, paused: paused)
   end
 end

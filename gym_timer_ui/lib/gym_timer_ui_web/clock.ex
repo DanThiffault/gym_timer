@@ -325,10 +325,12 @@ defmodule GymTimerUiWeb.Clock do
       @blank <>
       color <>
       color <>
+      color <>
+      color <>
       @blank <>
       @blank <>
       @blank <>
-      @blank <> @blank <> @blank <> color <> color
+      @blank <> @blank <> @blank <> @blank <> @blank
   end
 
   def digit("2", color) do
@@ -338,9 +340,15 @@ defmodule GymTimerUiWeb.Clock do
       color <>
       color <>
       color <>
+      @blank <>
+      @blank <>
       color <>
       color <>
-      color <> color <> color <> color <> @blank <> @blank
+      color <>
+      color <>
+      color <>
+      color <>
+      @blank <> @blank
   end
 
   def digit("3", color) do
@@ -348,7 +356,17 @@ defmodule GymTimerUiWeb.Clock do
       @blank <>
       color <>
       color <>
-      color <> color <> color <> color <> @blank <> @blank <> color <> color <> color <> color
+      color <>
+      color <>
+      color <>
+      color <>
+      color <>
+      color <>
+      @blank <>
+      @blank <>
+      color <>
+      color <>
+      @blank <> @blank
   end
 
   def digit("4", color) do
@@ -356,7 +374,9 @@ defmodule GymTimerUiWeb.Clock do
       color <>
       @blank <>
       @blank <>
-      color <> color <> color <> color <> @blank <> @blank <> @blank <> @blank <> color <> color
+      color <>
+      color <>
+      color <> color <> @blank <> @blank <> @blank <> @blank <> color <> color <> @blank <> @blank
   end
 
   def digit("5", color) do
@@ -364,7 +384,9 @@ defmodule GymTimerUiWeb.Clock do
       color <>
       color <>
       color <>
-      @blank <> @blank <> color <> color <> @blank <> @blank <> color <> color <> color <> color
+      @blank <>
+      @blank <>
+      color <> color <> color <> color <> @blank <> @blank <> color <> color <> @blank <> @blank
   end
 
   def digit("6", color) do
@@ -372,7 +394,9 @@ defmodule GymTimerUiWeb.Clock do
       color <>
       @blank <>
       @blank <>
-      @blank <> @blank <> color <> color <> color <> color <> color <> color <> color <> color
+      @blank <>
+      @blank <>
+      color <> color <> color <> color <> color <> color <> color <> color <> @blank <> @blank
   end
 
   def digit("7", color) do
@@ -380,7 +404,12 @@ defmodule GymTimerUiWeb.Clock do
       @blank <>
       color <>
       color <>
-      color <> color <> @blank <> @blank <> @blank <> @blank <> @blank <> @blank <> color <> color
+      color <>
+      color <>
+      color <>
+      color <>
+      @blank <>
+      @blank <> @blank <> @blank <> @blank <> @blank <> @blank <> @blank
   end
 
   def digit("8", color) do
@@ -388,7 +417,9 @@ defmodule GymTimerUiWeb.Clock do
       color <>
       color <>
       color <>
-      color <> color <> color <> color <> color <> color <> color <> color <> color <> color
+      color <>
+      color <>
+      color <> color <> color <> color <> color <> color <> color <> color <> @blank <> @blank
   end
 
   def digit("9", color) do
@@ -396,7 +427,9 @@ defmodule GymTimerUiWeb.Clock do
       color <>
       color <>
       color <>
-      color <> color <> color <> color <> @blank <> @blank <> @blank <> @blank <> color <> color
+      color <>
+      color <>
+      color <> color <> @blank <> @blank <> @blank <> @blank <> color <> color <> @blank <> @blank
   end
 
   def digit("0", color) do
@@ -404,19 +437,26 @@ defmodule GymTimerUiWeb.Clock do
       color <>
       color <>
       color <>
-      color <> color <> @blank <> @blank <> color <> color <> color <> color <> color <> color
+      color <>
+      color <>
+      color <> color <> color <> color <> color <> color <> @blank <> @blank <> @blank <> @blank
   end
 
   def digit(":", color) do
-    color <> color
-  end
-
-  def digit(":off", _color) do
-    @blank <> @blank
+    @blank <>
+      @blank <>
+      @blank <>
+      @blank <>
+      @blank <>
+      @blank <>
+      @blank <>
+      @blank <> @blank <> @blank <> @blank <> @blank <> @blank <> @blank <> color <> color
   end
 
   def digit(_number, _color) do
     @blank <>
+      @blank <>
+      @blank <>
       @blank <>
       @blank <>
       @blank <>
