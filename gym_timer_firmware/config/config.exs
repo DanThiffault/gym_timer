@@ -54,7 +54,7 @@ config :blinkchain, canvas: {30, 2}, dma_channel: 9
 
 config :blinkchain, :channel0,
   pin: 18,
-  type: :grb,
+  type: :rgb,
   brightness: 100,
   arrangement: [
     %{
@@ -67,7 +67,7 @@ config :blinkchain, :channel0,
 
 config :blinkchain, :channel1,
   pin: 13,
-  type: :grb,
+  type: :rgb,
   brightness: 100,
   arrangement: [
     %{

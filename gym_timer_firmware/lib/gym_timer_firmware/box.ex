@@ -6,9 +6,14 @@ defmodule GymTimerFirmware.Box do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
 
+  def terminate(_reason, state) do
+    :timer.cancel(Map.get(state, :timer))
+    {:stop, state}
+  end
+
   def init(_opts) do
-    :timer.send_interval(100, self(), :tick)
-    {:ok, %{}}
+    {:ok, timer_ref} = :timer.send_interval(100, self(), :tick)
+    {:ok, %{timer: timer_ref}}
   end
 
   def handle_info(:tick, state) do

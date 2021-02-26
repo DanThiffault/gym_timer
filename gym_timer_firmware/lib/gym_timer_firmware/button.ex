@@ -28,11 +28,14 @@ defmodule GymTimerFirmware.Button do
   @impl GenServer
   def handle_info({:circuits_gpio, gpio_pin, _timestamp, 1}, %{pin: gpio_pin} = state) do
     # Button pressed. Start a timer to launch the wizard when it's long enough
+
+    Logger.info('button push')
     {:noreply, state, 5_000}
   end
 
   def handle_info({:circuits_gpio, gpio_pin, _timestamp, 0}, %{pin: gpio_pin} = state) do
     # Button released. The GenServer timer is implicitly cancelled by receiving this message.
+    Logger.info('button released')
     {:noreply, state}
   end
 
@@ -43,13 +46,12 @@ defmodule GymTimerFirmware.Button do
     Application.put_env(:gym_timer_ui, GymTimerUiWeb.Endpoint, config)
 
     Application.stop(:gym_timer_ui)
+
     Application.start(:gym_timer_ui)
 
-    :ok =
-      VintageNetWizard.run_wizard(
-        device_info: get_device_info(),
-        on_exit: {__MODULE__, :handle_wizard_exit, []}
-      )
+    :ok = VintageNetWizard.run_wizard(on_exit: {__MODULE__, :handle_wizard_exit, []})
+
+    Logger.info('button timeout')
 
     {:noreply, state}
   end
@@ -64,34 +66,5 @@ defmodule GymTimerFirmware.Button do
 
     Application.stop(:gym_timer_ui)
     Application.start(:gym_timer_ui)
-  end
-
-  defp get_device_info() do
-    kv =
-      Nerves.Runtime.KV.get_all_active()
-      |> kv_to_map
-
-    mac_addr = VintageNet.get(["interface", "wlan0", "mac_address"])
-
-    [
-      {"WiFi Address", mac_addr},
-      {"Serial number", serial_number()},
-      {"Firmware", kv["nerves_fw_product"]},
-      {"Firmware version", kv["nerves_fw_version"]},
-      {"Firmware UUID", kv["nerves_fw_uuid"]}
-    ]
-  end
-
-  defp kv_to_map(key_values) do
-    for kv <- key_values, into: %{}, do: kv
-  end
-
-  defp serial_number() do
-    with boardid_path when not is_nil(boardid_path) <- System.find_executable("boardid"),
-         {id, 0} <- System.cmd(boardid_path, []) do
-      String.trim(id)
-    else
-      _other -> "Unknown"
-    end
   end
 end

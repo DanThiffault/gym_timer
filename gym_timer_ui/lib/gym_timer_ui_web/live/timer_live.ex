@@ -91,7 +91,7 @@ defmodule GymTimerUiWeb.TimerLive do
   end
 
   def assign_current_time(socket) do
-    %{clock: clock} = GymTimerUiWeb.Clock.val()
+    all = %{clock: clock} = GymTimerUiWeb.Clock.val()
 
     digits =
       for <<r::8, g::8, b::8 <- clock>> do

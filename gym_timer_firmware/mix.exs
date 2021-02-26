@@ -40,6 +40,7 @@ defmodule GymTimerFirmware.MixProject do
       {:nerves_runtime, "~> 0.11.3", targets: @all_targets},
       {:nerves_pack, "~> 0.4.1", targets: @all_targets},
       {:circuits_gpio, "~> 0.4.1", targets: @all_targets},
+      {:circuits_uart, "~> 1.4.2", targets: @all_targets},
 
       # Dependencies for specific targets
       {:nerves_system_rpi, "~> 1.13", runtime: false, targets: :rpi},

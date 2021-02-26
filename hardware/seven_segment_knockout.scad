@@ -1,6 +1,6 @@
 
-module hex (unit=20,height=10) {
-    translate([unit,3*unit,0]) {
+module hex (unit=20,height=15) {
+    translate([unit + 2,3*unit + 2,0]) {
         linear_extrude(height) {        
             polygon(points=[
                 [0,unit],//0
@@ -13,19 +13,6 @@ module hex (unit=20,height=10) {
     }
 }
 
-module hex_with_holes(unit, height) {
-    translate([2,2,0]) {
-        hex(unit,10);    
-        translate([unit,unit/2,-5]) {
-            cylinder(d=5, h=5);
-        }
-        translate([unit,3*unit+4,-5]) {
-            cylinder(d=5, h=5);
-        }
-    };
-}
-
-//hex(25,10);
 //16mm on center
 //250mm/digit inner
 //140 max/digit. ~120mm /
@@ -36,82 +23,93 @@ border=2;
 difference() {
     cube([u*6+margin*2+border*2,u*10+margin*2+border*2,15]);
     translate([0,-1,0]) {
-        translate([margin-1,margin+u,5]) { 
-            hex_with_holes(u);
+        translate([margin-1,margin+u,0]) { 
+            hex(u);
         }
         
-        translate([margin-1,margin+5*u+border,5]) { 
-            hex_with_holes(u);
+        translate([margin-1,margin+5*u+border,0]) { 
+            hex(u);
         }
         
-        translate([margin+4*u+1,margin+u,5]) { 
-            hex_with_holes(u);
+        translate([margin+4*u+1,margin+u,0]) { 
+            hex(u);
         }
         
-        translate([margin+4*u+1,margin+5*u+border,5]) { 
-            hex_with_holes(u);
+        translate([margin+4*u+1,margin+5*u+border,0]) { 
+            hex(u);
         }
         
-        translate([50+margin+border+u,margin-1,5]) { 
+        translate([50+margin+border+u,margin-1,0]) { 
             rotate([0,0,90]) {
-                hex_with_holes(u);
+                hex(u);
             }
         }
         
-        translate([50+margin+border+u,margin-1+4*u+border,5]) { 
+        translate([50+margin+border+u,margin-1+4*u+border,0]) { 
             rotate([0,0,90]) {
-                hex_with_holes(u);
+                hex(u);
             }
         }
         
-        translate([50+margin+border+u,margin-1+4*u+border+4*u+border,5]) { 
+        translate([50+margin+border+u,margin-1+4*u+border+4*u+border,0]) { 
             rotate([0,0,90]) {
-                hex_with_holes(u);
+                hex(u);
             }
         }
     }
     
     // square cutouts
-    translate([2*u+border*2+margin,2*u+border*2+margin-1,5]) {
-        cube([u*2-4,u*2-4,10]);        
-        translate([u*2-8,4,-5]) {
-            linear_extrude(5) {
-                circle(d=5);
-            }
-        }   
-        translate([4,u*2-8,-5]) {
-            linear_extrude(5) {
-                circle(d=5);
-            }
-        }   
+    translate([2*u+border*2+margin,2*u+border*2+margin-1,0]) {
+        cube([u*2-4,u*2-4,15]);        
     }
-    translate([2*u+border*2+margin,2*u+border*2+margin+4*u+1,5]) {
-        cube([u*2-4,u*2-4,10]);        
-        translate([u*2-8,4,-5]) {
-            linear_extrude(5) {
-                circle(d=5);
-            }
-        }   
-        translate([4,u*2-8,-5]) {
-            linear_extrude(5) {
-                circle(d=5);
-            }
-        }   
+    translate([2*u+border*2+margin,2*u+border*2+margin+4*u+1,0]) {
+        cube([u*2-4,u*2-4,15]);         
     }
     
     // mounting holes
-    translate([10,10,7]) {
-        cylinder(h=8, d=5);
+    translate([10,10,0]) {
+        cylinder(h=15, d=3.4, $fn=12);
     }
-    translate([u*6+margin*2+border*2-10,10,7]) {
-        cylinder(h=8, d=5);
+    translate([u*6+margin*2+border*2-10,10,0]) {
+        cylinder(h=15, d=3.4, $fn=12);
     }
-    translate([10,u*10+margin*2+border*2-10,7]) {
-        cylinder(h=8, d=5);
+    translate([10,u*10+margin*2+border*2-10,0]) {
+        cylinder(h=15, d=3.4, $fn=12);
     }
-    translate([u*6+margin*2+border*2-10,u*10+margin*2+border*2-10,7]) {
-        cylinder(h=8, d=5);
+    translate([u*6+margin*2+border*2-10,u*10+margin*2+border*2-10,0]) {
+        cylinder(h=15, d=3.4, $fn=12);
     }
+    
+    // connection wire cutouts
+    translate([0,62,0]) {
+        cube([10,10,5]);
+    };
+    
+    translate([86-10,62,0]) {
+        cube([10,10,5]);
+    };
+    
+    // vertical mounts
+    translate([18,8,15/2]) {
+        rotate(90,[1,0,0]) {
+            cylinder(h=8, d=5);
+        };
+    };
+    translate([86-18,8,15/2]) {
+        rotate(90,[1,0,0]) {
+            cylinder(h=8, d=5);
+        };
+    };
+    translate([18,134,15/2]) {
+        rotate(90,[1,0,0]) {
+            cylinder(h=8, d=5);
+        };
+    };
+    translate([86-18,134,15/2]) {
+        rotate(90,[1,0,0]) {
+            cylinder(h=8, d=5);
+        };
+    };
 }
 
     
