@@ -13,11 +13,22 @@ defmodule GymTimerFirmware.Box do
 
   def init(_opts) do
     {:ok, timer_ref} = :timer.send_interval(100, self(), :tick)
-    {:ok, %{timer: timer_ref}}
+    {:ok, %{timer: timer_ref, previous_sounds: %{}}}
   end
 
-  def handle_info(:tick, state) do
-    %{clock: clock} = GymTimerUiWeb.Clock.val()
+  def handle_info(:tick, state = %{previous_sounds: previous_sounds}) do
+    %{clock: clock, mode: mode, sounds: sounds} = GymTimerUiWeb.Clock.val()
+
+    previous_active_sounds =
+      previous_sounds |> Enum.filter(fn {k, v} -> v end) |> Enum.map(fn {k, v} -> k end)
+
+    current_active_sounds =
+      sounds |> Enum.filter(fn {k, v} -> v end) |> Enum.map(fn {k, v} -> k end)
+
+    new_sounds = current_active_sounds -- previous_active_sounds
+
+    Enum.each(new_sounds, fn sound -> GymTimerFirmware.Sound.play_sound(sound) end)
+
     colors = for <<r::8, g::8, b::8 <- clock>>, do: %Blinkchain.Color{r: r, g: g, b: b}
 
     colors
@@ -26,6 +37,6 @@ defmodule GymTimerFirmware.Box do
 
     Blinkchain.render()
 
-    {:noreply, state}
+    {:noreply, Map.put(state, :previous_sounds, sounds)}
   end
 end

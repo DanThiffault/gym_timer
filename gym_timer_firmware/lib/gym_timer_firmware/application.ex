@@ -20,7 +20,8 @@ defmodule GymTimerFirmware.Application do
         # Starts a worker by calling: GymTimerFirmware.Worker.start_link(arg)
         # ,
         GymTimerFirmware.Box,
-        {GymTimerFirmware.Button, gpio_pin}
+        {GymTimerFirmware.Button, gpio_pin},
+        {GymTimerFirmware.Sound, "ttyAMA0"}
       ] ++ children(target())
 
     Supervisor.start_link(children, opts)

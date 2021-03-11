@@ -1,28 +1,20 @@
 difference() {
-    cube([30,60,12]);
-
-    translate([0,30,6]) {
+    cube([25,12,15]);
+    // handle holder
+    translate([0,5.7,10]) {
         rotate(90,[0,1,0]) {
-            cylinder(d=5.4,h=30, $fn=12);
+            cylinder(d=5.4,h=25, $fn=12);
         }
     };
-    translate([7.5,7.5,0]) {
-        cylinder(d=4, h=12, $fn=12);
+    // bottom connections
+    translate([5,6,0]) {
+        cylinder(d=4, h=5, $fn=12);
     };
-    translate([22.5,7.5,0]) {
-        cylinder(d=4, h=12, $fn=12);
+    translate([20,6,0]) {
+        cylinder(d=4, h=5, $fn=12);
     };
-    translate([7.5,52.5,0]) {
-        cylinder(d=4, h=12, $fn=12);
+    // cut outs
+    translate([9,0,5]) {
+        cube([7,12,12]);
     };
-    translate([22.5,52.5,0]) {
-        cylinder(d=4, h=12, $fn=12);
-    };
-    translate([0,0,3]) {
-        cube([30,20,9]);
-    };
-    
-    translate([0,40,3]) {
-        cube([30,20,9]);
-    };
-};
+}

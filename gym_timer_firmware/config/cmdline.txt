@@ -9,4 +9,4 @@
 #    to modify this file on the MicroSD card via your development computer. To
 #    make changes permanent, you'll need to override the fwup.conf.
 # 5. See https://www.raspberrypi.org/documentation/configuration/cmdline-txt.md
-root=/dev/mmcblk0p2 rootwait quiet
+console=tty1 fbcon=scrollback:1024k consoleblank=0 root=/dev/mmcblk0p2 rootwait quiet

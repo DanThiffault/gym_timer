@@ -99,8 +99,8 @@ defmodule GymTimerUiWeb.TimerLive do
       end
       |> Enum.chunk_every(16)
 
-    state = %{digits: digits}
-    paused = Map.has_key?(state, :pause_start)
+    state = %{digits: digits, pause_start: Map.get(all, :pause_start)}
+    paused = Map.has_key?(all, :pause_start)
 
     assign(socket, digits: digits, paused: paused)
   end

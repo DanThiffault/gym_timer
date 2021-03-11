@@ -14,9 +14,9 @@
 <div class="controls row">
   <div class="column column-50">
     <%= unless @paused do %>
-      <button class="button button-large" phx-click="pause">Pause</button>
+      <button class="button button-large" id="pause" phx-click="pause">Pause</button>
     <% else %>
-      <button class="button button-large" phx-click="unpause">Unpause</button>
+      <button class="button button-large" id="unpause" phx-click="unpause">Unpause</button>
     <% end %>
     <button class="button button-large" phx-click="count_up_form">Up</button>
     <button class="button button-large" phx-click="count_down_form">Down</button>
